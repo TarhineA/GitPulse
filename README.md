@@ -2,6 +2,8 @@
 
 A GitHub profile analytics dashboard built with React + Recharts.
 
+🔗 **Live Demo:** https://gitpulse-indol.vercel.app/
+
 ## Features
 - Profile card with avatar, bio, location
 - Stats: repos, stars, forks, followers
