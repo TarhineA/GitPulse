@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
 import { Analytics } from "@vercel/analytics/react";
 
-// ─── CONSTANTS ───────────────────────────────────────────────────────────────
+
 const ACCENT = "#00e5cc";
 const ACCENT2 = "#00ff88";
 const BG = "#0a0a0a";
@@ -38,7 +38,7 @@ const LANG_COLORS = {
 
 const CHART_COLORS = [ACCENT, ACCENT2, "#ff6b6b", "#ffd93d", "#c77dff", "#ff9a3c"];
 
-// ─── HELPERS ─────────────────────────────────────────────────────────────────
+
 const fmt = (n) => (n >= 1000 ? `${(n / 1000).toFixed(1)}k` : n?.toString() ?? "0");
 const ago = (dateStr) => {
   const d = new Date(dateStr);
@@ -52,7 +52,7 @@ const ago = (dateStr) => {
 };
 const joinYear = (dateStr) => new Date(dateStr).getFullYear();
 
-// ─── SKELETON ─────────────────────────────────────────────────────────────────
+
 const Skeleton = ({ w = "100%", h = "1rem", r = "2px", className = "" }) => (
   <div
     className={className}
@@ -65,7 +65,7 @@ const Skeleton = ({ w = "100%", h = "1rem", r = "2px", className = "" }) => (
   />
 );
 
-// ─── FADE-IN WRAPPER ──────────────────────────────────────────────────────────
+
 const FadeIn = ({ delay = 0, children, style = {} }) => {
   const [visible, setVisible] = useState(false);
   useEffect(() => {
@@ -84,7 +84,7 @@ const FadeIn = ({ delay = 0, children, style = {} }) => {
   );
 };
 
-// ─── LABEL ───────────────────────────────────────────────────────────────────
+
 const Label = ({ children }) => (
   <span style={{
     fontFamily: "'IBM Plex Mono', monospace",
@@ -93,7 +93,7 @@ const Label = ({ children }) => (
   }}>{children}</span>
 );
 
-// ─── STAT BOX ────────────────────────────────────────────────────────────────
+
 const StatBox = ({ label, value, accent = false }) => (
   <div style={{
     flex: 1, padding: "1.25rem 1.5rem",
@@ -116,7 +116,7 @@ const StatBox = ({ label, value, accent = false }) => (
   </div>
 );
 
-// ─── LANG BADGE ──────────────────────────────────────────────────────────────
+
 const LangBadge = ({ lang }) => (
   <span style={{
     display: "inline-flex", alignItems: "center", gap: "0.3rem",
@@ -135,7 +135,7 @@ const LangBadge = ({ lang }) => (
   </span>
 );
 
-// ─── CUSTOM TOOLTIP ───────────────────────────────────────────────────────────
+
 const CustomTooltip = ({ active, payload }) => {
   if (!active || !payload?.length) return null;
   const { name, value } = payload[0].payload;
@@ -152,10 +152,10 @@ const CustomTooltip = ({ active, payload }) => {
   );
 };
 
-// ─── SKELETON DASHBOARD ───────────────────────────────────────────────────────
+
 const LoadingSkeleton = () => (
   <div style={{ display: "flex", flexDirection: "column", gap: "1px" }}>
-    {/* Profile */}
+    
     <div style={{
       background: SURFACE, border: `1px solid ${BORDER}`,
       padding: "2rem", display: "flex", gap: "1.5rem", alignItems: "flex-start",
@@ -168,7 +168,7 @@ const LoadingSkeleton = () => (
         <Skeleton w="200px" h="0.85rem" />
       </div>
     </div>
-    {/* Stats */}
+    
     <div style={{ display: "flex", gap: "1px" }}>
       {[1,2,3].map(i => (
         <div key={i} style={{ flex:1, background: SURFACE, border:`1px solid ${BORDER}`, padding:"1.25rem" }}>
@@ -177,7 +177,7 @@ const LoadingSkeleton = () => (
         </div>
       ))}
     </div>
-    {/* Repos */}
+    
     <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1px" }}>
       {[1,2,3,4,5].map(i => (
         <div key={i} style={{ background: SURFACE, border:`1px solid ${BORDER}`, padding:"1.25rem" }}>
@@ -190,7 +190,7 @@ const LoadingSkeleton = () => (
   </div>
 );
 
-// ─── ERROR STATES ─────────────────────────────────────────────────────────────
+
 const ErrorState = ({ type, username }) => {
   const states = {
     not_found: {
@@ -239,12 +239,12 @@ const ErrorState = ({ type, username }) => {
   );
 };
 
-// ─── MAIN APP ─────────────────────────────────────────────────────────────────
+
 export default function GitPulse() {
   const [input, setInput] = useState("");
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null); // { type }
+  const [error, setError] = useState(null); 
   const [data, setData] = useState(null);
   const inputRef = useRef(null);
 
@@ -275,14 +275,14 @@ export default function GitPulse() {
         return;
       }
 
-      // Stats
+      
       const totalStars = repos.reduce((s, r) => s + (r.stargazers_count || 0), 0);
       const totalForks = repos.reduce((s, r) => s + (r.forks_count || 0), 0);
 
-      // Top repos by stars
+      
       const topRepos = [...repos].sort((a, b) => b.stargazers_count - a.stargazers_count).slice(0, 5);
 
-      // Language distribution
+      
       const langMap = {};
       repos.forEach(r => {
         if (r.language) langMap[r.language] = (langMap[r.language] || 0) + 1;
@@ -292,7 +292,7 @@ export default function GitPulse() {
         .slice(0, 6)
         .map(([name, value]) => ({ name, value }));
 
-      // Most recent
+      
       const recentRepo = [...repos].sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at))[0];
 
       setData({ user, repos, topRepos, langData, totalStars, totalForks, recentRepo });
@@ -331,7 +331,7 @@ export default function GitPulse() {
         .repo-card { transition: border-color 0.15s, background 0.15s; }
       `}</style>
 
-      {/* ── HEADER ── */}
+      
       <div style={{
         borderBottom: `1px solid ${BORDER}`,
         padding: "0 2rem",
@@ -352,7 +352,7 @@ export default function GitPulse() {
         <Label>github public api · no auth</Label>
       </div>
 
-      {/* ── SEARCH ── */}
+     
       <div style={{
         borderBottom: `1px solid ${BORDER}`,
         padding: "1.5rem 2rem",
@@ -407,10 +407,10 @@ export default function GitPulse() {
         )}
       </div>
 
-      {/* ── CONTENT ── */}
+      
       <div style={{ padding: "1.5rem 2rem", maxWidth: 1200, margin: "0 auto" }}>
 
-        {/* Empty state */}
+        
         {!loading && !error && !data && (
           <div style={{
             padding: "5rem", textAlign: "center",
@@ -426,13 +426,13 @@ export default function GitPulse() {
           </div>
         )}
 
-        {/* Loading */}
+       
         {loading && <LoadingSkeleton />}
 
-        {/* Errors */}
+        
         {!loading && error && <ErrorState type={error.type} username={query} />}
 
-        {/* No repos */}
+        
         {!loading && !error && hasNoRepos && (
           <div style={{ display: "flex", flexDirection: "column", gap: "1px" }}>
             <ProfileCard user={data.user} delay={0} />
@@ -440,16 +440,16 @@ export default function GitPulse() {
           </div>
         )}
 
-        {/* Full dashboard */}
+        
         {!loading && !error && data && !hasNoRepos && (
           <div style={{ display: "flex", flexDirection: "column", gap: "1px" }}>
 
-            {/* Profile */}
+           
             <FadeIn delay={0}>
               <ProfileCard user={data.user} />
             </FadeIn>
 
-            {/* Stats row */}
+            
             <FadeIn delay={80}>
               <div style={{ display: "flex", gap: "1px" }}>
                 <StatBox label="Public Repos" value={fmt(data.user.public_repos)} />
@@ -460,10 +460,10 @@ export default function GitPulse() {
               </div>
             </FadeIn>
 
-            {/* Main grid */}
+           
             <div style={{ display: "grid", gridTemplateColumns: "1fr 360px", gap: "1px", marginTop: "1px" }}>
 
-              {/* Left: Top Repos */}
+              
               <FadeIn delay={160}>
                 <div style={{ background: SURFACE, border: `1px solid ${BORDER}`, padding: "1.5rem" }}>
                   <div style={{ marginBottom: "1rem", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
@@ -539,7 +539,7 @@ export default function GitPulse() {
                 </div>
               </FadeIn>
 
-              {/* Right: Donut + Activity */}
+              
               <div style={{ display: "flex", flexDirection: "column", gap: "1px" }}>
                 <FadeIn delay={240}>
                   <div style={{
@@ -597,7 +597,7 @@ export default function GitPulse() {
                   </div>
                 </FadeIn>
 
-                {/* Recent Activity */}
+                
                 {data.recentRepo && (
                   <FadeIn delay={320}>
                     <div style={{
@@ -642,7 +642,7 @@ export default function GitPulse() {
               </div>
             </div>
 
-            {/* Footer */}
+           
             <FadeIn delay={400}>
               <div style={{
                 padding: "1rem 0", display: "flex", justifyContent: "space-between",
@@ -661,7 +661,7 @@ export default function GitPulse() {
   );
 }
 
-// ─── PROFILE CARD ─────────────────────────────────────────────────────────────
+
 function ProfileCard({ user }) {
   return (
     <div style={{
