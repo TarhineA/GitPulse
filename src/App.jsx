@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
+import { Analytics } from "@vercel/analytics/react";
 
 // ─── CONSTANTS ───────────────────────────────────────────────────────────────
 const ACCENT = "#00e5cc";
@@ -655,6 +656,7 @@ export default function GitPulse() {
           </div>
         )}
       </div>
+      <Analytics />
     </div>
   );
 }
